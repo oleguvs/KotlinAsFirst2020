@@ -72,7 +72,12 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int{
+    return when{
+        n<10->1
+        else-> 1+digitNumber(n/10)
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -80,21 +85,44 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int{
+    if(n<=2) return 1
+    var result=0
+    var previous=0
+    var next=1
+    for(i in 2..n){
+        result=previous+next
+        previous=next
+        next=result
+    }
+    return result
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int{
+    for(divider in 2 until n/2){
+        if(n%divider==0) return divider
+    }
+    return n
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int{
+    for(divisor in n/2 downTo 3){
+        if(n%divisor==0){
+            return divisor
+        }
+    }
+    return 1
+}
 
 /**
  * Простая (2 балла)
@@ -120,7 +148,14 @@ fun collatzSteps(x: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int{
+    val lcf = m*n
+    val min = if(m<n) m else n
+    for(multiple in min..lcf step min){
+        if(multiple%m==0 && multiple%n==0) return multiple
+    }
+    return lcf
+}
 
 /**
  * Средняя (3 балла)
@@ -129,7 +164,13 @@ fun lcm(m: Int, n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean{
+    val max = if(m>n) m else n
+    for(divisor in 2..max/2){
+        if(m%divisor==0 && n%divisor==0) return false
+    }
+    return true
+}
 
 /**
  * Средняя (3 балла)
