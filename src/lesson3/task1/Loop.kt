@@ -74,7 +74,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int{
     return when{
-        n<10->1
+        n in -9..9->1
         else-> 1+digitNumber(n/10)
     }
 }
