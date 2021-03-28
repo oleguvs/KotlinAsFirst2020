@@ -188,7 +188,16 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int{
+    val numPosition= digitNumber(n)
+    var result=0
+    var num=n
+    repeat(numPosition){
+        result=10*result+num%10
+        num/=10
+    }
+    return result
+}
 
 /**
  * Средняя (3 балла)
