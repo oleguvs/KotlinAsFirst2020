@@ -120,7 +120,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = kotlin.math.sqrt(v.map({it*it}).sum())
+fun abs(v: List<Double>): Double = kotlin.math.sqrt(v.map({ it * it }).sum())
 
 /**
  * Простая (2 балла)
@@ -137,7 +137,13 @@ fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.average
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val average = list.average()
+    for ((ind, elem) in list.withIndex()) {
+        list[ind] = elem - average
+    }
+    return list
+}
 
 /**
  * Средняя (3 балла)
@@ -146,7 +152,14 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int = TODO()
+fun times(a: List<Int>, b: List<Int>): Int {
+    var sum = 0
+    for (ind in a.indices) {
+        val element = a[ind] * b[ind]
+        sum += element
+    }
+    return sum
+}
 
 /**
  * Средняя (3 балла)
