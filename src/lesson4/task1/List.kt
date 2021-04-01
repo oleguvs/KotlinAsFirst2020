@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -138,10 +139,8 @@ fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.average
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    val average = list.average()
-    for ((ind, elem) in list.withIndex()) {
-        list[ind] = elem - average
-    }
+    val avr = list.average()
+    list.replaceAll({ it - avr })
     return list
 }
 
@@ -263,4 +262,83 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val THOUSAND = 1000
+    val BASE_10 = 10.0
+    val result = mutableListOf<String>()
+
+    fun convertSymbolToString(num: Int, power: Int, thousandsPlace: Boolean): String {
+        return when (power) {
+            2 -> when (num) {
+                1 -> "сто"
+                2 -> "двести"
+                3 -> "триста"
+                4 -> "четыреста"
+                5 -> "пятьсот"
+                6 -> "шестьсот"
+                7 -> "семьсот"
+                8 -> "восемьсот"
+                else -> "девятьсот"
+            }
+            1 -> when (num) {
+                2 -> "двадцать"
+                3 -> "тридцать"
+                4 -> "сорок"
+                5 -> "пятьдесят"
+                6 -> "шестьдесят"
+                7 -> "семьдесят"
+                8 -> "восемьдесят"
+                9 -> "девятьдесят"
+                10 -> "десять"
+                11 -> "одиннадцать"
+                12 -> "двенадцать"
+                13 -> "тринадцать"
+                14 -> "четырнадцать"
+                15 -> "пятнадцать"
+                16 -> "шестьнадцать"
+                17 -> "семнадцать"
+                18 -> "восемьнадцать"
+                else -> "девятнадцать"
+            }
+            else -> when (num) {
+                1 -> if (thousandsPlace) "одна" else "один"
+                2 -> if (thousandsPlace) "две" else "два"
+                3 -> "три"
+                4 -> "четыре"
+                5 -> "пять"
+                6 -> "шесть"
+                7 -> "семь"
+                8 -> "восемь"
+                else -> "девять"
+            }
+        }
+    }
+
+    fun writePartOfNum(n: Int, isThousandsPlace: Boolean = true) {
+        if (n == 0) return
+        var num = n
+        for (power in 2 downTo 0) {
+            val div = (BASE_10.pow(power)).toInt()
+            val symbol = num / div
+            if (symbol == 0) continue
+            if (symbol == 1 && power == 1) {
+                result.add(convertSymbolToString(num, power, isThousandsPlace))
+                break
+            } else {
+                result.add(convertSymbolToString(symbol, power, isThousandsPlace))
+                if (power != 0) num %= div
+            }
+        }
+        if (isThousandsPlace) {
+            val thousand = when (num) {
+                1 -> "тысяча"
+                2, 3, 4 -> "тысячи"
+                else -> "тысяч"
+            }
+            result.add(thousand)
+        }
+    }
+    writePartOfNum(n / THOUSAND)
+    writePartOfNum(n % THOUSAND, false)
+    return result.joinToString(" ")
+}
