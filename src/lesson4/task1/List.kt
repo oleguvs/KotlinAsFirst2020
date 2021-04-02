@@ -189,7 +189,32 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    val listPrimes = mutableListOf(n)
+    fun isPrime(ind: Int): Boolean {
+        val num = listPrimes[ind]
+        var div = 2
+        while (div * div <= num) {
+            if (num % div == 0) {
+                val ratio = num / div
+                listPrimes.remove(num)
+                listPrimes.add(ind, ratio)
+                listPrimes.add(div)
+                println(listPrimes)
+                return false
+            }
+            div++
+        }
+        return true
+    }
+
+    var ind = 0
+    while (ind < listPrimes.size) {
+        if (isPrime(ind))
+            ind++
+    }
+    return listPrimes.sortedBy { it }.toList()
+}
 
 /**
  * Сложная (4 балла)
@@ -253,7 +278,50 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    val BASE_10 = 10.0
+    var num = n
+    var result = ""
+    fun convertArabicToRoman(arabic: Int, power: Int) {
+        val ones = when (power) {
+            3 -> "M"
+            2 -> "C"
+            1 -> "X"
+            else -> "I"
+        }
+        val halftens = when (power) {
+            2 -> "D"
+            1 -> "L"
+            else -> "V"
+        }
+        val tens = when (power) {
+            2 -> "M"
+            1 -> "C"
+            else -> "X"
+        }
+        val romanNumeral = when (arabic) {
+            1 -> ones
+            2 -> ones + ones
+            3 -> ones + ones + ones
+            4 -> ones + halftens
+            5 -> halftens
+            6 -> halftens + ones
+            7 -> halftens + ones + ones
+            8 -> halftens + ones + ones + ones
+            else -> ones + tens
+        }
+        result += romanNumeral
+    }
+
+    for (power in 3 downTo 0) {
+        val div = (BASE_10.pow(power)).toInt()
+        val arabicNumeral = num / div
+        if (arabicNumeral == 0) continue
+        convertArabicToRoman(arabicNumeral, power)
+        num %= div
+    }
+    return result
+}
 
 /**
  * Очень сложная (7 баллов)
